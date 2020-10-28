@@ -4,7 +4,7 @@ function authorization(req, res, next) {
   Todo.findByPk(req.params.id)
     .then(data => {
       if (!data) {
-        throw { name: "Todo Not Found", status: 404 }
+        throw { name: "Not Found", status: 404 }
       } else if (data.UserId === req.loggedInUser.id) {
         next()
       } else {

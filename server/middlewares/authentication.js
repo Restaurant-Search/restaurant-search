@@ -5,7 +5,7 @@ function authentication(req, res, next) {
   const { token } = req.headers
 
   if (!token) {
-    throw { name: "Authentication Failed" }
+    throw { name: "Authentication Failed", status: 401 }
   } else {
     const decoded = verifyToken(token)
     User.findOne({
@@ -15,7 +15,7 @@ function authentication(req, res, next) {
     })
       .then(data => {
         if (!data) {
-          throw { name: "Authentication Failed" }
+          throw { name: "Authentication Failed", status: 401 }
         } else {
           req.loggedInUser = decoded
           next()
