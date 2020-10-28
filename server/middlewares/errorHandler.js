@@ -23,6 +23,7 @@ module.exports = function (err, req, res, next) {
     error = "Wrong Email/Password"
   } else if (err.status) {
     return res.status(err.status).json({ error: err.name })
+    
   }
   res.status(status).json({ error })
 }
