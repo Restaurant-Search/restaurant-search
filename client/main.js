@@ -22,7 +22,7 @@ const login = (e) => {
 
   $.ajax({
     method: 'POST',
-    url: baseUrl + '/signin',
+    url: baseUrl + '/login',
     data: {
       email,
       password
