@@ -5,6 +5,7 @@ const { signToken } = require("../helpers/jwt")
 class UserController {
   static postRegister(req, res, next) {
     const payload = {
+      name: req.body.name,
       email: req.body.email,
       password: req.body.password
     }
@@ -31,9 +32,9 @@ class UserController {
     })
       .then(data => {
         if (!data) {
-          throw { name: "ErrorLogin" }
+          throw { name: "Wrong Email/Password", status: 401 }
         } else if (!comparePassword(payload.password, data.password)) {
-          throw { name: "ErrorLogin" }
+          throw { name: "Wrong Email/Password", status: 401 }
         }
         const access_token = signToken({
           id: data.id,
