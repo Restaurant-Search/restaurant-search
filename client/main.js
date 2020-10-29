@@ -96,17 +96,17 @@ function onSignIn(googleUser) {
 
   $.ajax({
     method: 'POST',
-    url: baseUrl + '/googleLogin', 
-    data: {
+    url: baseUrl + '/googlelogin', 
+    headers: {
       google_access_token
     }
   })
     .done(response => {
       localStorage.setItem('access_token', response.access_token)
+      $("#register").hide()
+      $("#login").hide()
       $("#logout").show()
       $("#content").show()
-      $("#login").hide()
-      $("#register").hide()
     })
     .fail(err => {
       console.log(err)
