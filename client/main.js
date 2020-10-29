@@ -1,10 +1,9 @@
 const baseUrl = "http://localhost:3000"
 
 $(document).ready(() => {
-  const token = localStorage.getItem('token')
-  if (token) {
-    $("#content").show()
+  if (localStorage.token) {
     $("#navBtn").hide()
+    $("#content").show()
     $("#login").hide()
     $("#register").hide()
   } else {
@@ -39,8 +38,10 @@ const login = (e) => {
     }
   })
     .done(response => {
-      const token = response.token
+      console.log(response)
+      const token = response.access_token
       localStorage.setItem('token', token)
+      $("#navBtn").hide()
       $("#login").hide()
       $("#content").show()
       $("#email").val("")
@@ -55,7 +56,8 @@ const register = (e) => {
   e.preventDefault()
   const name = $("#req-name").val()
   const email = $("#req-email").val()
-  const password = $("req-password").val()
+  const password = $("#req-password").val()
+  console.log(name, email, password);
 
   $.ajax({
     method: 'POST',
@@ -67,11 +69,14 @@ const register = (e) => {
     }
   })
     .done(response => {
-      const token = response.token
+      const token = response.access_token
       localStorage.setItem('token', token)
-      $("#content").hide()
+      $("#content").show()
       $("#login").hide()
       $("#register").hide()
+    })
+    .fail(err => {
+      console.log(err);
     })
 }
 
