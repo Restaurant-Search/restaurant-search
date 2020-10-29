@@ -10,7 +10,7 @@ class ZomatoController {
         "user-key": process.env.ZOMATO
       },
       "params": {
-        "q": req.query.q
+        "q": req.body.q
       }
     })
       .then(({ data }) => {
@@ -31,7 +31,7 @@ class ZomatoController {
       },
       "params": {
         // ini diubah sesuai params yang dimasukin oleh user
-        "city_id": req.query.city_id
+        "city_id": req.body.city_id
       }
     })
       .then(({ data }) => {
@@ -52,9 +52,9 @@ class ZomatoController {
       },
       "params": {
         // ini diubah sesuai params yang sudah ada sesuai dengan city dan establisment
-        "entity_id": req.query.entity_id,
-        "entity_type": req.query.entity_type,
-        "establishment_type": req.query.establishment_type,
+        "entity_id": req.body.entity_id,
+        "entity_type": req.body.entity_type,
+        "establishment_type": req.body.establishment_type,
       }
     })
       .then(({ data }) => {

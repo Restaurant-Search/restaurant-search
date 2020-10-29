@@ -1,9 +1,14 @@
 require("dotenv").config()
 
+<<<<<<< HEAD
 const cors = require('cors')
+=======
+const cors = require('cors')
+>>>>>>> cd3ca25e926110ca453432560ba1a7c529882aaa
 const express = require("express")
 const app = express()
 const port = +process.env.PORT
+const cors = require("cors")
 const routes = require("./routes")
 const errorHandler = require("./middlewares/errorHandler")
 
