@@ -8,11 +8,11 @@ class WeatherController {
       "headers": {
         "content-type": "application/octet-stream",
         "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-        "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+        "x-rapidapi-key": "6ed05a76b8msha9266fffc10329dp198415jsne0edd2cc2310",
         "useQueryString": true
       },
       "params": {
-        "q": req.params.q
+        "q": req.body.q
       }
     })
       .then(({ data }) => {
