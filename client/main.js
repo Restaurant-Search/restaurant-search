@@ -96,14 +96,14 @@ function onSignIn(googleUser) {
 
   $.ajax({
     method: 'POST',
-    url: baseUrl + '/googlelogin', 
+    url: baseUrl + '/googlelogin',
     headers: {
       google_access_token
     }
   })
     .done(response => {
       localStorage.setItem('access_token', response.access_token)
-      $("#register").hide()
+      $("#navBtn").hide()
       $("#login").hide()
       $("#logout").show()
       $("#content").show()
@@ -122,7 +122,7 @@ function signOut() {
 }
 
 const registerBtn = () => {
-  $("#navBtn").hide() 
+  $("#navBtn").hide()
   $("#content").hide()
   $("#login").hide()
   $("#register").show()
