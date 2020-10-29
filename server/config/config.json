@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "postgres",
+    "username": "bimodwienprabowo",
+    "password": "bimo",
     "database": "database_restaurantSearch",
     "host": "127.0.0.1",
     "dialect": "postgres"
