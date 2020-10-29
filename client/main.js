@@ -41,7 +41,6 @@ const login = (e) => {
     }
   })
     .done(response => {
-      console.log(response)
       const token = response.access_token
       localStorage.setItem('token', token)
       $("#navBtn").hide()
@@ -102,7 +101,6 @@ function onSignIn(googleUser) {
     }
   })
     .done(response => {
-      console.log(res);
       localStorage.setItem('access_token', response.access_token)
       $("#logout").show()
       $("#content").show()

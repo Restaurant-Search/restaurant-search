@@ -48,7 +48,7 @@ class UserController {
       })
   }
 
-  static googleLogin(req, res, next) {
+  static googleLogin(req, res, next) { 
     //verify token
     //dapetin token dari client
     let { google_access_token } = req.body
