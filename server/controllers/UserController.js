@@ -2,6 +2,7 @@ const { OAuth2Client } = require('google-auth-library');
 const { User } = require("../models")
 const { comparePassword } = require("../helpers/bcrypt")
 const { signToken } = require("../helpers/jwt")
+const { OAuth2Client } = require('google-auth-library');
 
 class UserController {
   static postRegister(req, res, next) {
@@ -47,8 +48,7 @@ class UserController {
         next(err)
       })
   }
-
-  static googleLogin(req, res, next) { 
+  static googleLogin(req, res, next) {
     //verify token
     //dapetin token dari client
     let { google_access_token } = req.body
@@ -62,9 +62,7 @@ class UserController {
       .then(ticket => {
         let payload = ticket.getPayload()
         email = payload.email
-        return User.findOne({
-          where: { email: payload.email }
-        })
+        return User.findOne({ where: { email: payload.email } })
       })
       .then(user => {
         if (user) {
@@ -82,7 +80,7 @@ class UserController {
         return res.status(200).json({ access_token })
       })
       .catch(err => {
-        next(err)
+        res.status(401).json(err.message)
       })
   }
 }
