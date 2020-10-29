@@ -4,6 +4,7 @@ $(document).ready(() => {
   const token = localStorage.getItem('token')
   if (token) {
     $("#content").show()
+    $("#navBtn").hide()
     $("#login").hide()
     $("#register").hide()
   } else {
@@ -20,6 +21,7 @@ $(document).ready(() => {
 const logout = () => {
   $("#login").show()
   $("#content").hide()
+  $("#navBtn").show()
   localStorage.removeItem('token')
 }
 
