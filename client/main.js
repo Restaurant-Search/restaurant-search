@@ -1,3 +1,6 @@
+const { fail } = require("assert")
+const { response } = require("../server/routes/weather")
+
 const baseUrl = "http://localhost:3000"
 
 $(document).ready(() => {
@@ -134,4 +137,18 @@ const loginBtn = () => {
   $("#register").hide()
 }
 
-
+// Zomato
+function city(){
+  let cityId = data.location_suggestions[0].id  
+  $.ajax({
+    method: 'GET',
+    url : baseUrl + '/restaurant/city',
+    data : cityId
+  })
+  .done(response =>{
+    console.log(response)
+  })
+  .fail(err =>{
+    console.log(err)
+  })
+}
