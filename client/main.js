@@ -24,6 +24,7 @@ const logout = () => {
   $("#content").hide()
   $("#navBtn").show()
   localStorage.removeItem('token')
+  signOut()
 }
 
 // login
@@ -121,7 +122,7 @@ function signOut() {
 }
 
 const registerBtn = () => {
-  $("#navBtn").hide()
+  $("#navBtn").hide() 
   $("#content").hide()
   $("#login").hide()
   $("#register").show()
