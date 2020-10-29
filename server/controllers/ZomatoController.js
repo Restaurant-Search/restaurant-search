@@ -14,7 +14,8 @@ class ZomatoController {
       }
     })
       .then(({ data }) => {
-        res.status(200).json(data)
+        // const city_id = data.location_suggestions[0].id
+        res.status(200).json(data.location_suggestions[0])
       })
       .catch((error) => {
         res.status(500).json(error)
