@@ -47,7 +47,6 @@ class UserController {
         next(err)
       })
   }
-
   static googleLogin(req, res, next) {
     //verify token
     //dapetin token dari client
@@ -80,7 +79,7 @@ class UserController {
         return res.status(200).json({ access_token })
       })
       .catch(err => {
-
+        res.status(401).json(err.message)
       })
   }
 }
