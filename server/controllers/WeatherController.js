@@ -12,7 +12,7 @@ class WeatherController {
         "useQueryString": true
       },
       "params": {
-        "q": req.body.q
+        "q": req.query.q
       }
     })
       .then(({ data }) => {
