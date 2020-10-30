@@ -2,13 +2,7 @@ const baseUrl = "http://localhost:3000"
 
 $(document).ready(() => {
   if (localStorage.token) {
-<<<<<<< HEAD
     afterLogin()
-=======
-
-    afterLogin()
-
->>>>>>> 1621dae1df346c7739049e078bc415ca44748b47
     weather()
   } else {
     beforeLogin()
@@ -104,18 +98,7 @@ function onSignIn(googleUser) {
     }
   })
     .done(response => {
-      localStorage.setItem('access_token', response.access_token)
-<<<<<<< HEAD
-      // $("#navBtn").hide()
-      // $("#login").hide()
-      // $("#logout").show()
-      // $("#content").show()
-=======
-      $("#navBtn").hide()
-      $("#login").hide()
-      $("#logout").show()
-      $("#content").show()
->>>>>>> 1621dae1df346c7739049e078bc415ca44748b47
+      localStorage.setItem('token', response.access_token)
       afterLogin()
     })
     .fail(err => {
@@ -139,6 +122,8 @@ const allContent = () => {
   $("#map").hide()
   $("#cityBtn").hide()
   $("#zomato").hide()
+  $("#tabelSearch").hide()
+  $("#tabelEstablishment").hide()
 }
 
 const afterLogin = () => {
@@ -151,6 +136,8 @@ const afterLogin = () => {
   $("#navBtn").hide()
   $("#login").hide()
   $("#register").hide()
+  $("#tabelSearch").hide()
+  $("#tabelEstablishment").hide()
 }
 
 const beforeLogin = () => {
@@ -161,6 +148,8 @@ const beforeLogin = () => {
   $("#map").hide()
   $("#cityBtn").hide()
   $("#zomato").hide()
+  $("#tabelSearch").hide()
+  $("#tabelEstablishment").hide()
 }
 
 const registerBtn = () => {
@@ -182,7 +171,6 @@ function city() {
   let token = localStorage.getItem('token')
   $.ajax({
     method: 'GET',
-<<<<<<< HEAD
     url: baseUrl + '/restaurant/city',
     headers: {
       token: token
@@ -196,6 +184,7 @@ function city() {
       localStorage.setItem('q', response.id)
       localStorage.setItem('city', response.name)
       establishment()
+      $("#tabelEstablishment").show()
       weather()
     })
     .fail(err => {
@@ -217,11 +206,15 @@ function establishment() {
   })
     .done(response => {
       localStorage.setItem('establishments', response.establishments)
-      response.establishments.forEach(element => {
-        $('#establishment').append(`
-      <p> ${element.establishment.id} , ${element.establishment.name} </p>
-      <button class="nav-link" id="establishment${element.establishment.id}" onclick="searchZomato(${element.establishment.id})" href="#">Search </button>
-      `)
+      response.establishments.forEach((element, index) => {
+        $('#tabelEst').append(`
+      <tr>
+        <th scope="row">${index + 1}</th>
+        <td>${element.establishment.name}</td>
+        <td><button class="nav-link" id="establishment${element.establishment.id}" onclick="searchZomato(${element.establishment.id})" href="#">Search </button></td>
+      </tr>
+        `)
+        $("#tabelSearch").hide()
       });
     })
     .fail(err => {
@@ -230,6 +223,7 @@ function establishment() {
 }
 
 function searchZomato(establishmentId) {
+  console.log(establishmentId);
   let access = localStorage.getItem('token')
   $.ajax({
     method: 'GET',
@@ -238,76 +232,23 @@ function searchZomato(establishmentId) {
       token: access
     },
     data: {
-=======
-    url : baseUrl + '/restaurant/city',
-    headers :{
-      token : token
-    },
-    data : {
-      q
-    }
-  })
-  .done(response =>{
-    console.log(response.id)
-    localStorage.setItem('q', response.id)
-    localStorage.setItem('city', response.name)
-    establishment()
-    weather()
-  })
-  .fail(err =>{
-    console.log(err)
-  })
-}
-
-function establishment(){
-  let access = localStorage.getItem('token')
-  $.ajax({
-    method : 'GET',
-    url : baseUrl + '/restaurant/establishment',
-    headers:{
-      token: access
-    },
-    data : {
-      city_id : localStorage.getItem('q')
-    }
-  })
-  .done(response =>{
-    localStorage.setItem('establishments', response.establishments)
-    response.establishments.forEach(element => {
-      $('#establishment').append(`
-      <p> ${element.establishment.id} , ${element.establishment.name} </p>
-      <button class="nav-link" id="establishment${element.establishment.id}" onclick="searchZomato(${element.establishment.id})" href="#">Search </button>
-      `)
-    });
-  })
-  .fail(err =>{
-    console.log(err)
-  })
-}
-
-function searchZomato(establishmentId){
-  let access = localStorage.getItem('token')
-  $.ajax({
-    method : 'GET',
-    url : baseUrl + '/restaurant/search',
-    headers:{
-      token: access
-    },
-    data : {
->>>>>>> 1621dae1df346c7739049e078bc415ca44748b47
       entity_id: localStorage.getItem('q'),
       entity_type: "city",
       establishment_type: establishmentId,
     }
   })
-<<<<<<< HEAD
     .done(response => {
-      $('#establishment').hide()
-      response.restaurants.forEach(element => {
-        $('#search').append(`
-        <h4>${element.restaurant.name}</h4>
-        <p>${element.restaurant.location.address}</p>
-      `)
+      console.log(response);
+      $('#tabelEstablishment').hide()
+      $("#tabelSearch").show()
+      response.restaurants.forEach((element, index) => {
+        $('#tabelSrc').append(`
+      <tr>
+        <th scope="row">${index + 1}</th>
+        <td>${element.restaurant.name}</td>
+        <td>${element.restaurant.location.address}</td>
+      </tr>
+        `)
       })
     })
     .fail(err => {
@@ -330,50 +271,12 @@ function weather() {
   })
     .done(response => {
       $('#weather').append(`
-=======
-  .done(response =>{
-    $('#establishment').hide()
-    response.restaurants.forEach(element =>{
-      $('#search').append(`
-        <h4>${element.restaurant.name}</h4>
-        <p>${element.restaurant.location.address}</p>
-      `)
-    })
-  })
-  .fail(err =>{
-    console.log(err)
-  })
-}
-
-function weather(){
-  $('#weather').empty()
-  let access = localStorage.getItem('token')
-  $.ajax({
-    method : 'GET',
-    url : baseUrl + '/weather',
-    headers : {
-      token : access
-    },
-    data :{
-      q : localStorage.getItem('city')
-    }
-  })
-  .done(response => {
-    $('#weather').append(`
->>>>>>> 1621dae1df346c7739049e078bc415ca44748b47
     <h4>${response.name}</h4>
     <h4>${response.weather[0].main}</h4>
     <h4>${response.weather[0].description}</h4>
     `)
-<<<<<<< HEAD
     })
     .fail(err => {
       console.log(err)
     })
-=======
-  })
-  .fail(err => {
-    console.log(err)
-  })
->>>>>>> 1621dae1df346c7739049e078bc415ca44748b47
 }
