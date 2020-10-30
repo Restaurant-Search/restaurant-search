@@ -1,7 +1,12 @@
 {
   "development": {
+<<<<<<< HEAD
     "username": "khasogi27",
     "password": "root",
+=======
+    "username": "bimodwienprabowo",
+    "password": "bimo",
+>>>>>>> 1621dae1df346c7739049e078bc415ca44748b47
     "database": "database_restaurantSearch",
     "host": "127.0.0.1",
     "dialect": "postgres"
