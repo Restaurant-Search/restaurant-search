@@ -38,13 +38,8 @@ const login = (e) => {
     }
   })
     .done(response => {
-      const token = response.access_token
-      localStorage.setItem('token', token)
-      $("#navBtn").hide()
-      $("#login").hide()
-      $("#content").show()
-      $("#email").val("")
-      $("#password").val("")
+      localStorage.setItem('token', response.access_token)
+      afterLogin()
     })
     .fail(err => {
       console.log(err);
@@ -74,6 +69,7 @@ const register = (e) => {
       $("#login").hide()
       $("#register").hide()
       $("#navBtn").hide()
+      afterLogin()
     })
     .fail(err => {
       console.log(err);
