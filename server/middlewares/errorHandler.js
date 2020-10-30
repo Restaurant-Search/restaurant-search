@@ -14,6 +14,7 @@ module.exports = function (err, req, res, next) {
     error = err.message
   } else if (err.status) {
     return res.status(err.status).json({ error: err.name })
+    
   }
   res.status(status).json({ error })
 }

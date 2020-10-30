@@ -36,6 +36,7 @@ class ZomatoController {
       }
     })
       .then(({ data }) => {
+        
         res.status(200).json(data)
       })
       .catch((error) => {
