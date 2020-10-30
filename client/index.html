@@ -42,7 +42,7 @@
   </nav>
 
   <div class="container d-flex align-items-center justify-content-center">
-    <h1 class="text-white">Restaurant search</h1>
+    <h1 class="md-5 text-white">Restaurant search</h1>
     <img src="img/icon.png" style="width: 5%;" alt="">
   </div>
 
@@ -96,19 +96,49 @@
     </div>
   </section>
 
+    <!-- Search -->
+    <section class="container mt-5 text-white" id="cityBtn">
+      <div class="row justify-content-center">
+        <section class="container d-flex flex-column align-items-center justify-content-center" id="weather"></section>
+        <nav class="navbar form-inline">
+          <input type="text" class="form-control mr-sm-2" name="city" id="citySearch" placeholder="ex: jakarta" required>
+          <button class="nav-link mt-3 btn btn-dark my-2 my-sm-0" id="cityFunction" onclick="city()" href="#">City</button>
+        </nav>
+      </div>
+    </section>
+    
+    <table class="table" id="tabelEstablishment">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nama</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+      <tbody id="tabelEst" class="bg-light">
+      </tbody>
+    </table>
+    
+    <table class="table" id="tabelSearch">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nama</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+      <tbody id="tabelSrc" class="bg-light">
+      </tbody>
+    </table>
+
   <!-- Google Map And Zomato -->
-  <section class="container" id="content">
-    <div class="row justify-content-center mt-5" id="zomato">
-      <div class="widget_wrap" id="content" style="width:520px;height:504px;display:inline-block;"><iframe
-          src="https://www.zomato.com/widgets/res_search_widget.php?city_id=74&theme=red&widgetType=large&sort=popularity"
-          style="position:relative;width:100%;height:100%;" border="0" frameborder="0"></iframe></div>
-    </div>
+  <section class="container mt-5 rounded-circle" id="content">
     <input id="pac-input" class="controls" type="text" placeholder="Search Box" />
     <div id="map" style="height: 50%"></div>
     <script>
       function initAutocomplete() {
         const map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: -33.8688, lng: 151.2195 },
+          center: { lat: -6.200000, lng: 106.816666 },
           zoom: 13,
           mapTypeId: "roadmap",
         });
@@ -169,20 +199,6 @@
         });
       }
     </script>
-  </section>
-
-  <!-- Search -->
-  <section class="container mt-5" id="cityBtn">
-    <div class="row justify-content-center">
-      <input type="text" class="mr-2" name="city" id="citySearch" placeholder="ex: jakarta" required>
-      <button class="nav-link mt-3 btn btn-dark" id="cityFunction" onclick="city()" href="#">City</button>
-      
-      <section class="container text-white" id="weather"></section>
-      
-      <section class="container row justify-content-center" id="establishment"></section>
-      
-      <section class="container" id="search"></section>
-    </div>
   </section>
 
     <!-- ajax -->

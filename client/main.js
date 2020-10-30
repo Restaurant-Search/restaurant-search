@@ -98,7 +98,7 @@ function onSignIn(googleUser) {
     }
   })
     .done(response => {
-      localStorage.setItem('access_token', response.access_token)
+      localStorage.setItem('token', response.access_token)
       afterLogin()
     })
     .fail(err => {
@@ -122,6 +122,8 @@ const allContent = () => {
   $("#map").hide()
   $("#cityBtn").hide()
   $("#zomato").hide()
+  $("#tabelSearch").hide()
+  $("#tabelEstablishment").hide()
 }
 
 const afterLogin = () => {
@@ -134,6 +136,8 @@ const afterLogin = () => {
   $("#navBtn").hide()
   $("#login").hide()
   $("#register").hide()
+  $("#tabelSearch").hide()
+  $("#tabelEstablishment").hide()
 }
 
 const beforeLogin = () => {
@@ -144,6 +148,8 @@ const beforeLogin = () => {
   $("#map").hide()
   $("#cityBtn").hide()
   $("#zomato").hide()
+  $("#tabelSearch").hide()
+  $("#tabelEstablishment").hide()
 }
 
 const registerBtn = () => {
@@ -165,101 +171,112 @@ function city() {
   let token = localStorage.getItem('token')
   $.ajax({
     method: 'GET',
-    url : baseUrl + '/restaurant/city',
-    headers :{
-      token : token
+    url: baseUrl + '/restaurant/city',
+    headers: {
+      token: token
     },
-    data : {
+    data: {
       q
     }
   })
-  .done(response =>{
-    console.log(response.id)
-    localStorage.setItem('q', response.id)
-    localStorage.setItem('city', response.name)
-    establishment()
-    weather()
-  })
-  .fail(err =>{
-    console.log(err)
-  })
+    .done(response => {
+      console.log(response.id)
+      localStorage.setItem('q', response.id)
+      localStorage.setItem('city', response.name)
+      establishment()
+      $("#tabelEstablishment").show()
+      weather()
+    })
+    .fail(err => {
+      console.log(err)
+    })
 }
 
-function establishment(){
+function establishment() {
   let access = localStorage.getItem('token')
   $.ajax({
-    method : 'GET',
-    url : baseUrl + '/restaurant/establishment',
-    headers:{
+    method: 'GET',
+    url: baseUrl + '/restaurant/establishment',
+    headers: {
       token: access
     },
-    data : {
-      city_id : localStorage.getItem('q')
+    data: {
+      city_id: localStorage.getItem('q')
     }
   })
-  .done(response =>{
-    localStorage.setItem('establishments', response.establishments)
-    response.establishments.forEach(element => {
-      $('#establishment').append(`
-      <p> ${element.establishment.id} , ${element.establishment.name} </p>
-      <button class="nav-link" id="establishment${element.establishment.id}" onclick="searchZomato(${element.establishment.id})" href="#">Search </button>
-      `)
-    });
-  })
-  .fail(err =>{
-    console.log(err)
-  })
+    .done(response => {
+      localStorage.setItem('establishments', response.establishments)
+      response.establishments.forEach((element, index) => {
+        $('#tabelEst').append(`
+      <tr>
+        <th scope="row">${index + 1}</th>
+        <td>${element.establishment.name}</td>
+        <td><button class="nav-link" id="establishment${element.establishment.id}" onclick="searchZomato(${element.establishment.id})" href="#">Search </button></td>
+      </tr>
+        `)
+        $("#tabelSearch").hide()
+      });
+    })
+    .fail(err => {
+      console.log(err)
+    })
 }
 
-function searchZomato(establishmentId){
+function searchZomato(establishmentId) {
+  console.log(establishmentId);
   let access = localStorage.getItem('token')
   $.ajax({
-    method : 'GET',
-    url : baseUrl + '/restaurant/search',
-    headers:{
+    method: 'GET',
+    url: baseUrl + '/restaurant/search',
+    headers: {
       token: access
     },
-    data : {
+    data: {
       entity_id: localStorage.getItem('q'),
       entity_type: "city",
       establishment_type: establishmentId,
     }
   })
-  .done(response =>{
-    $('#establishment').hide()
-    response.restaurants.forEach(element =>{
-      $('#search').append(`
-        <h4>${element.restaurant.name}</h4>
-        <p>${element.restaurant.location.address}</p>
-      `)
+    .done(response => {
+      console.log(response);
+      $('#tabelEstablishment').hide()
+      $("#tabelSearch").show()
+      response.restaurants.forEach((element, index) => {
+        $('#tabelSrc').append(`
+      <tr>
+        <th scope="row">${index + 1}</th>
+        <td>${element.restaurant.name}</td>
+        <td>${element.restaurant.location.address}</td>
+      </tr>
+        `)
+      })
     })
-  })
-  .fail(err =>{
-    console.log(err)
-  })
+    .fail(err => {
+      console.log(err)
+    })
 }
 
-function weather(){
+function weather() {
   $('#weather').empty()
   let access = localStorage.getItem('token')
   $.ajax({
-    method : 'GET',
-    url : baseUrl + '/weather',
-    headers : {
-      token : access
+    method: 'GET',
+    url: baseUrl + '/weather',
+    headers: {
+      token: access
     },
-    data :{
-      q : localStorage.getItem('city')
+    data: {
+      q: localStorage.getItem('city')
     }
   })
-  .done(response => {
-    $('#weather').append(`
+    .done(response => {
+      $('#weather').append(`
     <h4>${response.name}</h4>
     <h4>${response.weather[0].main}</h4>
     <h4>${response.weather[0].description}</h4>
     `)
-  })
-  .fail(err => {
-    console.log(err)
-  })
+    })
+    .fail(err => {
+      console.log(err)
+    })
 }
