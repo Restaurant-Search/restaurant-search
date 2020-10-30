@@ -11,7 +11,6 @@ class ZomatoController {
       },
       "params": {
         "q": req.query.q
-
       }
     })
       .then(({ data }) => {
@@ -68,7 +67,5 @@ class ZomatoController {
       })
   }
 }
-
-
 
 module.exports = ZomatoController

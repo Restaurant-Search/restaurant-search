@@ -2,16 +2,12 @@ const baseUrl = "http://localhost:3000"
 
 $(document).ready(() => {
   if (localStorage.token) {
-    $("#logout").show()
-    $("#navBtn").hide()
-    $("#content").show()
-    $("#login").hide()
-    $("#register").hide()
+
+    afterLogin()
+
     weather()
   } else {
-    $("#content").hide()
-    $("#login").show()
-    $("#register").hide()
+    beforeLogin()
   }
 
   $("#logout").on("click", () => {
@@ -21,11 +17,12 @@ $(document).ready(() => {
 
 // logout
 const logout = () => {
-  $("#login").show()
   $("#content").hide()
+  $("#login").show()
   $("#navBtn").show()
   localStorage.removeItem('token')
   signOut()
+  allContent()
 }
 
 // login
@@ -97,17 +94,18 @@ function onSignIn(googleUser) {
 
   $.ajax({
     method: 'POST',
-    url: baseUrl + '/googlelogin', 
+    url: baseUrl + '/googlelogin',
     headers: {
       google_access_token
     }
   })
     .done(response => {
       localStorage.setItem('access_token', response.access_token)
-      $("#register").hide()
+      $("#navBtn").hide()
       $("#login").hide()
       $("#logout").show()
       $("#content").show()
+      afterLogin()
     })
     .fail(err => {
       console.log(err)
@@ -117,16 +115,48 @@ function onSignIn(googleUser) {
 // Google sign out
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
+  localStorage.clear('token')
+  $("#content").hide()
+  allContent()
   auth2.signOut().then(function () {
     console.log('User signed out.');
   });
 }
 
+const allContent = () => {
+  $("#pac-input").hide()
+  $("#map").hide()
+  $("#cityBtn").hide()
+  $("#zomato").hide()
+}
+
+const afterLogin = () => {
+  $("#pac-input").show()
+  $("#map").show()
+  $("#cityBtn").show()
+  $("#zomato").show()
+  $("#logout").show()
+  $("#content").show()
+  $("#navBtn").hide()
+  $("#login").hide()
+  $("#register").hide()
+}
+
+const beforeLogin = () => {
+  $("#login").show()
+  $("#content").hide()
+  $("#register").hide()
+  $("#pac-input").hide()
+  $("#map").hide()
+  $("#cityBtn").hide()
+  $("#zomato").hide()
+}
+
 const registerBtn = () => {
-  $("#navBtn").hide() 
+  $("#register").show()
+  $("#navBtn").hide()
   $("#content").hide()
   $("#login").hide()
-  $("#register").show()
 }
 
 const loginBtn = () => {
@@ -136,7 +166,7 @@ const loginBtn = () => {
 }
 
 // Zomato
-function city(){
+function city() {
   let q = $('#citySearch').val()
   let token = localStorage.getItem('token')
   $.ajax({
