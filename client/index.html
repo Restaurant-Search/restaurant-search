@@ -41,9 +41,9 @@
     </div>
   </nav>
 
-  <div class="container d-flex align-items-center justify-content-center">
+  <div class="container d-flex align-items-center justify-content-center mt-3">
     <h1 class="md-5 text-white">Restaurant search</h1>
-    <img src="img/icon.png" style="width: 5%;" alt="">
+    <img src="img/icon.png" class="ml-3" style="width: 7%" alt="">
   </div>
 
   <!-- login -->
@@ -54,11 +54,11 @@
         <form onsubmit="login(event)" class="text-white">
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" id="email" class="form-control" autocomplete="email">
+            <input type="text" id="email" class="form-control" placeholder="input your email" autocomplete="email">
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" class="form-control" autocomplete="current-password">
+            <input type="password" id="password" class="form-control" placeholder="input your password" autocomplete="current-password">
           </div>
           <button class="btn btn-dark">Login</button>
         </form>
@@ -75,15 +75,15 @@
         <form onsubmit="register(event)">
           <div class="form-group">
             <label form="name">Name</label>
-            <input type="text" id="req-name" class="form-control" autocomplete="name">
+            <input type="text" id="req-name" class="form-control" placeholder="input your name" autocomplete="name">
           </div>
           <div class="form-group">
             <label form="name">Email</label>
-            <input type="email" id="req-email" class="form-control" autocomplete="email">
+            <input type="email" id="req-email" class="form-control" placeholder="input your email" autocomplete="email">
           </div>
           <div class="form-group">
             <label form="password">Password</label>
-            <input type="password" id="req-password" class="form-control" autocomplete="current-password">
+            <input type="password" id="req-password" class="form-control" placeholder="input your password" autocomplete="current-password">
           </div>
           <button class="btn btn-dark">Register</button>
           <div class="justify-content-center">
@@ -132,9 +132,9 @@
     </table>
 
   <!-- Google Map And Zomato -->
-  <section class="container mt-5 rounded-circle" id="content">
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box" />
-    <div id="map" style="height: 50%"></div>
+  <section class="container mt-5" id="content">
+    <input id="pac-input" class="controls mt-2" type="text" placeholder="Search Box" style="border-radius: 5px;" />
+    <div id="map" style="height: 50%; border-radius: 20px;"></div>
     <script>
       function initAutocomplete() {
         const map = new google.maps.Map(document.getElementById("map"), {
