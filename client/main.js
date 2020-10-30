@@ -2,15 +2,10 @@ const baseUrl = "http://localhost:3000"
 
 $(document).ready(() => {
   if (localStorage.token) {
-    $("#logout").show()
-    $("#navBtn").hide()
-    $("#content").show()
-    $("#login").hide()
-    $("#register").hide()
+    afterLogin()
+    weather()
   } else {
-    $("#content").hide()
-    $("#login").show()
-    $("#register").hide()
+    beforeLogin()
   }
 
   $("#logout").on("click", () => {
@@ -20,11 +15,12 @@ $(document).ready(() => {
 
 // logout
 const logout = () => {
-  $("#login").show()
   $("#content").hide()
+  $("#login").show()
   $("#navBtn").show()
   localStorage.removeItem('token')
   signOut()
+  allContent()
 }
 
 // login
@@ -107,6 +103,7 @@ function onSignIn(googleUser) {
       $("#login").hide()
       $("#logout").show()
       $("#content").show()
+      afterLogin()
     })
     .fail(err => {
       console.log(err)
@@ -116,20 +113,158 @@ function onSignIn(googleUser) {
 // Google sign out
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
+  localStorage.clear('token')
+  $("#content").hide()
+  allContent()
   auth2.signOut().then(function () {
     console.log('User signed out.');
   });
 }
 
+const allContent = () => {
+  $("#pac-input").hide()
+  $("#map").hide()
+  $("#cityBtn").hide()
+  $("#zomato").hide()
+}
+
+const afterLogin = () => {
+  $("#pac-input").show()
+  $("#map").show()
+  $("#cityBtn").show()
+  $("#zomato").show()
+  $("#logout").show()
+  $("#content").show()
+  $("#navBtn").hide()
+  $("#login").hide()
+  $("#register").hide()
+}
+
+const beforeLogin = () => {
+  $("#login").show()
+  $("#content").hide()
+  $("#register").hide()
+  $("#pac-input").hide()
+  $("#map").hide()
+  $("#cityBtn").hide()
+  $("#zomato").hide()
+}
+
 const registerBtn = () => {
+  $("#register").show()
   $("#navBtn").hide()
   $("#content").hide()
   $("#login").hide()
-  $("#register").show()
 }
 
 const loginBtn = () => {
   $("#content").hide()
   $("#login").show()
   $("#register").hide()
+}
+
+// Zomato
+function city() {
+  let q = $('#citySearch').val()
+  let token = localStorage.getItem('token')
+  $.ajax({
+    method: 'GET',
+    url: baseUrl + '/restaurant/city',
+    headers: {
+      token: token
+    },
+    data: {
+      q
+    }
+  })
+    .done(response => {
+      console.log(response.id)
+      localStorage.setItem('q', response.id)
+      localStorage.setItem('city', response.name)
+      establishment()
+      weather()
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
+function establishment() {
+  let access = localStorage.getItem('token')
+  $.ajax({
+    method: 'GET',
+    url: baseUrl + '/restaurant/establishment',
+    headers: {
+      token: access
+    },
+    data: {
+      city_id: localStorage.getItem('q')
+    }
+  })
+    .done(response => {
+      localStorage.setItem('establishments', response.establishments)
+      response.establishments.forEach(element => {
+        $('#establishment').append(`
+      <p> ${element.establishment.id} , ${element.establishment.name} </p>
+      <button class="nav-link" id="establishment${element.establishment.id}" onclick="searchZomato(${element.establishment.id})" href="#">Search </button>
+      `)
+      });
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
+function searchZomato(establishmentId) {
+  let access = localStorage.getItem('token')
+  $.ajax({
+    method: 'GET',
+    url: baseUrl + '/restaurant/search',
+    headers: {
+      token: access
+    },
+    data: {
+      entity_id: localStorage.getItem('q'),
+      entity_type: "city",
+      establishment_type: establishmentId,
+    }
+  })
+    .done(response => {
+      $('#establishment').hide()
+      response.restaurants.forEach(element => {
+        $('#search').append(`
+        <h4>${element.restaurant.name}</h4>
+        <p>${element.restaurant.location.address}</p>
+      `)
+      })
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
+// Weather
+function weather() {
+  $('#weather').empty()
+  let access = localStorage.getItem('token')
+  $.ajax({
+    method: 'GET',
+    url: baseUrl + '/weather',
+    headers: {
+      token: access
+    },
+    data: {
+      q: localStorage.getItem('city')
+    }
+  })
+    .done(response => {
+      $('#weather').append(`
+    <h4>${response.name}</h4>
+    <h4>${response.weather[0].main}</h4>
+    <h4>${response.weather[0].description}</h4>
+    `)
+    })
+    .fail(err => {
+      console.log(err)
+    })
 }
